@@ -1,0 +1,20 @@
+<h1>タスクリスト</h1>
+
+<ul>
+
+<% @tasks.each do |task| %>
+<%# controllerで取得した@tasksを1つずつ取り出して列挙 %>
+
+  <li>
+<%= link_to task.id, task %>
+
+<%= task.content %>
+<%# 番号に詳細ページへのリンクを張り、その横に内容を表示 %>
+
+</li>
+
+<% end %>
+
+</ul>
+
+<%= link_to "新規タスクの登録", new_task_path %>
