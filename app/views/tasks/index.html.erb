@@ -1,21 +1,24 @@
 <h1>タスクリスト</h1>
 
-<ul>
-
-<% @tasks.each do |task| %>
-<%# controllerで取得した@tasksを1つずつ取り出して列挙 %>
-
-  <li>
-<%= link_to task.id, task %>
-
-<%= task.content %>
- （<%= task.status %>）
-<%# 番号に詳細ページへのリンクを張り、その横に内容を表示 %>
-
-</li>
-
+<% if @tasks.any? %>
+  <table class="table table-condensed table-hover">
+    <thead>
+      <tr>
+        <th>No.</th>
+        <th>タスク名</th>
+        <th>ステータス</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @tasks.each do |task| %>
+      <tr>
+        <td><%= link_to task.id, task %></td>
+        <td><%= task.content %></td>
+        <td><%= task.status %></td>
+      </tr>
+      <% end %>
+    </tbody>
+  </table>
 <% end %>
 
-</ul>
-
-<%= link_to "新規タスクの登録", new_task_path %>
+<%= link_to "新規タスクの登録", new_task_path, class: "btn btn-default" %>
