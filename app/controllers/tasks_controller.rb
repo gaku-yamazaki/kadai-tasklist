@@ -1,17 +1,16 @@
 class TasksController < ApplicationController
   def index
-    # 一覧表示するためのアクションを記入
-    # 取得した情報はView側でも使用するため、インスタンス変数とする
+    if logged_in?
+      @user = current_user
+    end
     @tasks = Task.all
   end
 
   def show
-    # 指定したidに対応する内容を取得
     @task = Task.find(params[:id])
   end
 
   def new
-    # 新しいインスタンスを作成
     @task = Task.new
   end
 
