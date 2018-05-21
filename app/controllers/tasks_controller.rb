@@ -1,8 +1,6 @@
 class TasksController < ApplicationController
+
   def index
-    if logged_in?
-      @user = current_user
-    end
     @tasks = Task.all
   end
 
