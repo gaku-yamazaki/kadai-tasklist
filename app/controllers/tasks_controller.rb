@@ -1,10 +1,16 @@
 class TasksController < ApplicationController
+before_action :require_user_logged_in, only: [:show, :new, :create, :edit, :update, :destroy]
+before_action :correct_user, only: [:show, :destroy]
 
   def index
-    @tasks = Task.all
+    if logged_in?
+      @user = current_user
+      @tasks = Task.all
+    end
   end
 
   def show
+    @user = current_user
     @task = Task.find(params[:id])
   end
 
@@ -13,11 +19,11 @@ class TasksController < ApplicationController
   end
 
   def create
-    @task = Task.new(task_params) #Strong Parameterを使用
-    
+    @task = current_user.tasks.build(task_params) #Strong Parameterを使用
+
     if @task.save
       flash[:success] = "タスクが正常に登録されました"
-      redirect_to @task
+      redirect_to root_url
     else
       flash[:danger] = "タスクの登録に失敗しました"
       render :new
@@ -41,17 +47,22 @@ class TasksController < ApplicationController
   end
 
   def destroy
-    @task = Task.find(params[:id])
     @task.destroy
-    
     flash[:success] = "タスクは正常に削除されました"
-    redirect_to tasks_url
+    redirect_back(fallback_location: root_path)
   end
   
   private
 
-  # Strong Parameter (content以外のカラムをフィルダリング)
+  # Strong Parameter
   def task_params
     params.require(:task).permit(:content, :status)
+  end
+  
+  def correct_user
+    @task = current_user.tasks.find_by(id: params[:id])
+    unless @task
+      redirect_to root_url
+    end
   end
 end

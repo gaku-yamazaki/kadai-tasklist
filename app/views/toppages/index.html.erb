@@ -1,5 +1,6 @@
 <% if logged_in? %>
 <h1><%= current_user.name %>のタスクリスト</h1>
+<p><%= @user.id %></p> 
 <% if @tasks.any? %>
   <table class="table table-condensed table-hover">
     <thead>
